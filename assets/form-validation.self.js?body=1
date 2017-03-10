@@ -1,0 +1,37 @@
+(function() {
+  $.fn.notify = function(form_group, css_class, messages) {
+    var html, msg;
+    form_group.addClass(css_class);
+    msg = $.map(messages, function(m) {
+      return "" + (m.charAt(0).toUpperCase()) + (m.slice(1));
+    });
+    html = "<div class='form-control-feedback'> " + (msg.join('<br />')) + " </div>";
+    return form_group.prepend(html);
+  };
+
+  $.fn.render_form_errors = function(model_name, errors) {
+    var form;
+    form = this;
+    return $.each(errors, function(field, messages) {
+      var input;
+      input = form.find('input, select, textarea').filter(function() {
+        var name, rgx;
+        name = $(this).attr('name');
+        rgx = new RegExp(model_name + "\\[" + field + "\\(?");
+        return name && name.match(rgx);
+      });
+      input.addClass('form-control-danger');
+      return form.notify(input.closest('.form-group'), 'has-danger', messages);
+    });
+  };
+
+  $.fn.clear_form_errors = function() {
+    this.find('.form-group').removeClass('has-danger');
+    return this.find('.form-control-feedback').remove();
+  };
+
+  $.fn.clear_form_fields = function() {
+    return this.find(':input', '#myform').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked').removeAttr('selected');
+  };
+
+}).call(this);

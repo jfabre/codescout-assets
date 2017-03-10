@@ -1,0 +1,20 @@
+(function() {
+  $(document).ready(function() {
+    var overlay;
+    $(".search-bar .input-group .dropdown-menu a.dropdown-item").on('click', function() {
+      var button, form, url, v;
+      v = $(this).html();
+      button = $(".search-bar .btn-group button:first-child");
+      form = $(".search-bar");
+      button.html(v);
+      url = form.attr('action').split('/');
+      url[url.length - 1] = v.toLowerCase();
+      return form.attr('action', url.join('/'));
+    });
+    overlay = $("#overlay");
+    return overlay.on("click", ".btn-info", function(e) {
+      return overlay.css("display", "none");
+    });
+  });
+
+}).call(this);

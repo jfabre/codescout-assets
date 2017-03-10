@@ -1,0 +1,16 @@
+(function() {
+  $(document).ready(function() {
+    var form;
+    form = $("#new_improvement");
+    form.on("ajax:success", function(e, data, status, xhr) {
+      form.clear_form_errors();
+      form.clear_form_fields();
+      return form.notify(form.find('.form-group'), "has-success", ["Thank you!"]);
+    });
+    return form.on("ajax:error", function(e, data, status, xhr) {
+      form.clear_form_errors();
+      return $("#new_improvement").render_form_errors('improvement', data.responseJSON);
+    });
+  });
+
+}).call(this);
